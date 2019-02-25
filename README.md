@@ -11,7 +11,7 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/db-i
 
 ## Starter Code
 
-The [Starter Code](https://github.com/LambdaSchool/db-i-guided) for this project is configured to run the server by typing `yarn server` or `npm run server`. The server will restart automatically on changes.
+There is no starter code for this project.
 
 ## Introduce Module Challenge
 
