@@ -2,7 +2,7 @@
 
 Guided project solution for **DB I** Module.
 
-Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/db-i-guided).
+Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webdb-i-guided).
 
 ## Prerequisites
 
