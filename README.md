@@ -149,7 +149,7 @@ select distinct City from Customers
 where City like '%ar%'
 order by City
 
-select * from Employees where FirstName like 'J_n%' -- returns Janet
+select * from Customers where City like 'A_c%' -- returns Aachen and Anchorage
 ```
 
 ## Use the NOT Operator
