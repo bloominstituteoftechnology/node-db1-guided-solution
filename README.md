@@ -72,7 +72,7 @@ where Country = 'France' or City = 'Paris'
 Ask student to write a query to get the list of products with category id of 2: how many records they get?
 Ask student to write a query to get the the name of category id of 2: what is the name?
 
-A possible solution using sub-routes:
+A possible solution:
 
 ```sql
 select * from products where CategoryId = 2
