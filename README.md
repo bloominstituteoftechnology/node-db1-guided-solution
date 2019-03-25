@@ -62,7 +62,7 @@ from Customers
 where Country = 'France' and City = 'Paris'
 
 -- change it to use or
-where Country = 'France' and City = 'Paris'
+where Country = 'France' or City = 'Paris'
 ```
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
@@ -105,7 +105,7 @@ order by price desc
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
 
-## Use Build-In functions
+## Use Built-In functions
 
 Some functions will be on most `RDBMS` like `count()`, `lenght()`, `sum()` and `max()`.
 
