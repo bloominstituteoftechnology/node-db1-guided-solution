@@ -13,7 +13,7 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webd
 
 There is no starter code for this project.
 
-## How to Use this Repository
+## How to Contribute
 
 - clone the [starter code](https://github.com/LambdaSchool/webtesting-ii-guided).
 - create a solution branch: `git checkout -b solution`.
