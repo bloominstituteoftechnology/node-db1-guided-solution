@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // We would want to validate the body here but are skipping this step to focus on db methods
   const postData = req.body;
 
@@ -41,21 +41,27 @@ router.post('/', (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   // Once again we would want to validate the body here
   const changes = req.body;
 
   try {
-    const changes = await Posts.update(id, changes);
-    res.status(201).json({ what: changes });
+    const count = await Posts.update(id, changes);
+
+    if (count) {
+      res.status(201).end();
+    } else {
+      res.status(404).json({ message: 'Could not find post with given id'});
+    }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Failed to update post' });
   }
 
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -64,7 +70,7 @@ router.delete('/:id', (req, res) => {
     if (count) {
       res.status(204).end();
     } else {
-      res.status(404).json({ message: 'Could not find post with given id'})
+      res.status(404).json({ message: 'Could not find post with given id'});
     }
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete post' });
