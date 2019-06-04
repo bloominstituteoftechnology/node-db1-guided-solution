@@ -448,7 +448,7 @@ router.delete('/:id', async (req, res) => {
     const count = await Post.remove(id);
 
     if (count) {
-      res.status(204).json({ deleted: count });
+      res.json({ deleted: count });
     } else {
       res.status(404).json({ message: 'Could not find post with given id'});
     }
