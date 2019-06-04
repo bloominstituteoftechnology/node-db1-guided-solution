@@ -193,20 +193,43 @@ where Country = 'UK'
 
 **Take a break if it's a good time**
 
-## Introduce Knex.js
-- Introduce the concept of a Query Builder
-- [Load docs in the browser](https://knexjs.org).
-- Browse Query Builder sections the docs, showing we can build SQL statements with JS
+## Introduce Query Builders
+Go through a brief explanation of what a `Query Builder` is and how it is simpler than a full fledge ORM like [Sequelize](http://docs.sequelizejs.com/), while providing a nice API we can use from JS.
+
+Explain that the query builder will translate from JavaScript code to the valid SQL
+
+Explain that the library also provides a way to use raw SQL for things that are not supported through the JS API.
+
+## Introduce Knex
+[Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
 1. Open `posts/post-model.js`. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. 
 
-2. Require `db-config` at the top of the file. Thiss will give us access to the query builder. Mention that some setup is necessary for `knex`, but that will be covered in the next lesson. 
+3. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson. 
+
+4. Create the `data/db-config.js` file and setup knex. Briefly mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
 
 ```js
-const db = require('../data/db-setup.js');
+const knex = require('knex');
+
+const config = {
+  client: 'sqlite3',
+  connection: {
+    filename: './data/posts.sqlite3'
+  },
+  useNullAsDefault: true
+};
+
+module.exports = knex(config);
 ```
 
-3. Write out the shells for all five helper methods and export them for use in the `post-router`. 
+5. Require `db-config` at the top of the file. This will give us access to the query builder. 
+
+```js
+const db = require('../data/db-config.js');
+```
+
+6. Write out the shells for all five helper methods and export them for use in the `post-router`. 
 
 ```js
 const db = require('../data/db-setup.js');
