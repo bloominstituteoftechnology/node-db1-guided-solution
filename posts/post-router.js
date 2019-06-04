@@ -1,12 +1,13 @@
 const express = require('express');
 
-const Posts = require('./post-model.js');
+// Import the post model
+const Post = require('./post-model.js');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const posts = await Posts.find();
+    const posts = await Post.find();
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: 'Failed to get posts' });
@@ -17,7 +18,7 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const post = await Posts.findById(id);
+    const post = await Post.findById(id);
   
     if (post) {
       res.json(post);
@@ -34,9 +35,10 @@ router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
-    const post = await Posts.add(postData);
+    const post = await Post.add(postData);
     res.status(201).json(post);
   } catch (err) {
+    console.log('post err', err);
     res.status(500).json({ message: 'Failed to create new post' });
   }
 });
@@ -47,28 +49,29 @@ router.put('/:id', async (req, res) => {
   const changes = req.body;
 
   try {
-    const count = await Posts.update(id, changes);
+    // update resolves to a count of records updated
+    const count = await Post.update(id, changes);
 
     if (count) {
-      res.status(201).end();
+      res.json({ updated: count });
     } else {
       res.status(404).json({ message: 'Could not find post with given id'});
     }
   } catch (err) {
-    console.log(err);
+    console.log('PUT error', err);
     res.status(500).json({ message: 'Failed to update post' });
   }
-
 });
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const count = await Posts.remove(id);
+    // remove resolves to a count of records removed
+    const count = await Post.remove(id);
 
     if (count) {
-      res.status(204).end();
+      res.status(204).json({ deleted: count });
     } else {
       res.status(404).json({ message: 'Could not find post with given id'});
     }
