@@ -203,11 +203,9 @@ Explain that the library also provides a way to use raw SQL for things that are 
 ## Introduce Knex
 [Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
-1. Open `posts/post-model.js`. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. 
+1. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson. 
 
-3. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson. 
-
-4. Create the `data/db-config.js` file and setup knex. Briefly mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
+2. Create the `data/db-config.js` file and setup knex. Briefly mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
 
 ```js
 const knex = require('knex');
@@ -223,13 +221,13 @@ const config = {
 module.exports = knex(config);
 ```
 
-5. Require `db-config` at the top of the file. This will give us access to the query builder. 
+4. Open `posts/post-model.js`. Require `db-config` at the top of the file. This will give us access to the query builder. 
 
 ```js
 const db = require('../data/db-config.js');
 ```
 
-6. Write out the shells for all five helper methods and export them for use in the `post-router`. 
+5. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. Write out the shells for all five helper methods and export them for use in the `post-router`. 
 
 ```js
 const db = require('../data/db-setup.js');
