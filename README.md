@@ -126,8 +126,6 @@ limit 5
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
 
-**Take a break if it's a good time**
-
 ## Use INSERT to Add Data to a Table
 
 Walk through the syntax of the insert command.
@@ -208,7 +206,7 @@ where Country = 'UK'
 const db = require('../data/db-setup.js');
 ```
 
-3. Write out the shells for all five helper methods and export them for use in the API. 
+3. Write out the shells for all five helper methods and export them for use in the `post-router`. 
 
 ```js
 const db = require('../data/db-setup.js');
@@ -255,12 +253,12 @@ function find() {
 }
 ```
 
-Mention that there are multiple ways to do things in knex, so they may also see `db.select('*').from('posts')`. This syntax looks more like the original SQL statements.
+Mention that knex often has multiple ways to do the same thing. For example, they should also use `db.select('*').from('posts')`. This syntax looks more like the original SQL statements.
 
 2. Use `find()` to write the `GET /api/posts/` endpoint in `posts/post-router`.
 
 ```js
-// Import the post model
+// Import the post model near the top of the file
 const Post = require('./post-model.js');
 ```
 
@@ -285,8 +283,8 @@ One possible solution:
 
 ```js
 function findById(id) {
-  // note that we are passing an id object into the where method
-  // note: this will resolve to an array containing a single post
+  // we are passing an id object into the where method
+  // this will resolve to an array containing a single post
   return db('posts').where({ id });
 }
 ```
@@ -347,7 +345,7 @@ router.get('/:id', async (req, res) => {
 
 ```js
 function add(post) {
-  // note that this knex statement will throw an error if the post object's keys do not match the columns in the database table
+  // this knex statement will throw an error if the post object's keys do not match the columns in the database table
   return db('posts').insert(post);
 }
 ```
@@ -356,14 +354,14 @@ function add(post) {
 
 ```js
 router.post('/', async (req, res) => {
-  // We would want to validate the body here but are skipping this step to focus on db methods
+  // We would want to validate the body here but are skipping this step to focus on db logic
   const postData = req.body;
 
   try {
     const post = await Post.add(postData);
     res.status(201).json(post);
   } catch (err) {
-    console.log('post err', err);
+    console.log('POST err', err);
     res.status(500).json({ message: 'Failed to create new post' });
   }
 });
@@ -371,12 +369,12 @@ router.post('/', async (req, res) => {
 
 3. Posts should have both `title` and `contents`. Test using `Postman` with an invalid body. Note the error in the console.
 
-4. Testing using `Postman` with a valid body. Note that the response is an array containg the id, rather than the full post. This is an easy fix in our `add()` method
+4. Test using `Postman` with a valid body. Note that the response is an array containg the id, rather than the full post. This is an easy fix in our `add()` method
 
 ```js
 async function add(post) {
   // insert resolves to an array of ids
-  // we can use our findById helper to return the full post
+  // we can use our findById helper to return the full post instead
   const [ id ] = await db('posts').insert(post);
   return findById(id);
 }
@@ -398,7 +396,7 @@ function update(id, changes) {
 
 ### You Do (estimated 3m to complete)
 
-Write the `remove()` model method. Mention to look at the `delete()` method in the `knex` docs.
+Write the `remove()` model method. Mention to look for the `del()/delete()` method in the `knex` docs.
 
 One possible solution:
 

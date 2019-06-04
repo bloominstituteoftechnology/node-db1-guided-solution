@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
     const post = await Post.add(postData);
     res.status(201).json(post);
   } catch (err) {
-    console.log('post err', err);
+    console.log('POST err', err);
     res.status(500).json({ message: 'Failed to create new post' });
   }
 });
