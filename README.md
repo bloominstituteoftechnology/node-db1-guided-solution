@@ -1,6 +1,4 @@
-# DB I Guided Project Solution
-
-Guided project solution for **DB I** Module.
+# Introduction to Relational Databases, SQL and Knex Solution
 
 Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webdb-i-guided).
 
@@ -115,11 +113,11 @@ order by price desc
 
 ## Use LIMIT Operator
 
-Limit can be used to show a limited number of records. 
+Limit can be used to show a limited number of records.
 We can use it with an order by statement to show to 5 most expensive products
 
 ```sql
-select * from products       
+select * from products
 order by price desc
 limit 5
 ```
@@ -184,7 +182,7 @@ Ask student to delete all customers from the UK
 A possible solution:
 
 ```sql
-delete from Customer 
+delete from Customer
 where Country = 'UK'
 -- should delete 7 records
 ```
@@ -194,6 +192,7 @@ where Country = 'UK'
 **Take a break if it's a good time**
 
 ## Introduce Query Builders
+
 Go through a brief explanation of what a `Query Builder` is and how it is simpler than a full fledge ORM like [Sequelize](http://docs.sequelizejs.com/), while providing a nice API we can use from JS.
 
 Explain that the query builder will translate from JavaScript code to the valid SQL
@@ -201,9 +200,10 @@ Explain that the query builder will translate from JavaScript code to the valid 
 Explain that the library also provides a way to use raw SQL for things that are not supported through the JS API.
 
 ## Introduce Knex
+
 [Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
-1. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson. 
+1. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson.
 
 2. Create the `data/db-config.js` file and setup knex. Briefly mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
 
@@ -213,21 +213,21 @@ const knex = require('knex');
 const config = {
   client: 'sqlite3',
   connection: {
-    filename: './data/posts.sqlite3'
+    filename: './data/posts.sqlite3',
   },
-  useNullAsDefault: true
+  useNullAsDefault: true,
 };
 
 module.exports = knex(config);
 ```
 
-4. Open `posts/post-model.js`. Require `db-config` at the top of the file. This will give us access to the query builder. 
+4. Open `posts/post-model.js`. Require `db-config` at the top of the file. This will give us access to the query builder.
 
 ```js
 const db = require('../data/db-config.js');
 ```
 
-5. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. Write out the shells for all five helper methods and export them for use in the `post-router`. 
+5. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. Write out the shells for all five helper methods and export them for use in the `post-router`.
 
 ```js
 const db = require('../data/db-setup.js');
@@ -237,28 +237,18 @@ module.exports = {
   findById,
   add,
   update,
-  remove
+  remove,
 };
 
-function find() {
+function find() {}
 
-}
+function findById(id) {}
 
-function findById(id) {
+function add(post) {}
 
-}
+function update(id, changes) {}
 
-function add(post) {
-
-}
-
-function update(id, changes) {
-
-}
-
-function remove(id) {
-
-}
+function remove(id) {}
 ```
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
@@ -316,7 +306,7 @@ router.get('/:id', async (req, res) => {
 
   try {
     const posts = await Post.findById(id);
-  
+
     // findById resolves to an array, so we must check the length
     if (posts.length) {
       res.json(posts);
@@ -328,14 +318,16 @@ router.get('/:id', async (req, res) => {
   }
 ```
 
-### Introduce first() 
+### Introduce first()
 
 If we prefer our findById method to return a single post instead of an array, we can use a method called `first()`. Refactor the code as follows:
 
 ```js
 function findById(id) {
   // this will now resolve to a single post
-  return db('posts').where({ id }).first();
+  return db('posts')
+    .where({ id })
+    .first();
 }
 ```
 
@@ -346,7 +338,7 @@ router.get('/:id', async (req, res) => {
   try {
     // change from posts to post
     const post = await Post.findById(id);
-  
+
     // we now check if our post is defined
     if (post) {
       res.json(post);
@@ -396,7 +388,7 @@ router.post('/', async (req, res) => {
 async function add(post) {
   // insert resolves to an array of ids
   // we can use our findById helper to return the full post instead
-  const [ id ] = await db('posts').insert(post);
+  const [id] = await db('posts').insert(post);
   return findById(id);
 }
 ```
@@ -411,7 +403,9 @@ Show them the syntax for updating in `knex`, emphasing the importance of the whe
 function update(id, changes) {
   // update resolves to a count of rows updated
   // additional code would be needed to send back the updated post
-  return db('posts').where({ id }).update(changes);
+  return db('posts')
+    .where({ id })
+    .update(changes);
 }
 ```
 
@@ -425,7 +419,9 @@ One possible solution:
 function remove(id) {
   // del/delete resolves to a count of rows removed
   // additional code would be needed to send back the removed post
-  return db('posts').where({ id }).del();
+  return db('posts')
+    .where({ id })
+    .del();
 }
 ```
 
@@ -450,7 +446,7 @@ router.put('/:id', async (req, res) => {
     if (count) {
       res.json({ updated: count });
     } else {
-      res.status(404).json({ message: 'Could not find post with given id'});
+      res.status(404).json({ message: 'Could not find post with given id' });
     }
   } catch (err) {
     console.log('PUT error', err);
@@ -458,6 +454,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 ```
+
 2. Write `DELETE /api/posts/:id`
 
 ```js
@@ -471,7 +468,7 @@ router.delete('/:id', async (req, res) => {
     if (count) {
       res.json({ deleted: count });
     } else {
-      res.status(404).json({ message: 'Could not find post with given id'});
+      res.status(404).json({ message: 'Could not find post with given id' });
     }
   } catch (err) {
     res.status(500).json({ message: 'Failed to delete post' });
