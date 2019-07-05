@@ -160,7 +160,7 @@ where CustomerName = 'Lambda School'
 ```
 
 ```sql
--- demonstate what happens when the where clause is missing
+-- demonstrate what happens when the where clause is missing
 update Customers set City = 'Silicon Valley'
 -- reset the database
 ```
@@ -255,7 +255,7 @@ function remove(id) {}
 
 ## Use Knex to Select
 
-1. Write a select all statment for the `find()` method
+1. Write a select all statement for the `find()` method
 
 ```js
 function find() {
@@ -382,7 +382,7 @@ router.post('/', async (req, res) => {
 
 3. Posts should have both `title` and `contents`. Test using `Postman` with an invalid body. Note the error in the console.
 
-4. Test using `Postman` with a valid body. Note that the response is an array containg the id, rather than the full post. This is an easy fix in our `add()` method
+4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. This is an easy fix in our `add()` method
 
 ```js
 async function add(post) {
@@ -397,7 +397,7 @@ async function add(post) {
 
 ## Use Knex to Update and Delete
 
-Show them the syntax for updating in `knex`, emphasing the importance of the where clause. Note that where comes before update, unlike in SQL.
+Show them the syntax for updating in `knex`, emphasis on the importance of the where clause. Note that where comes before update, unlike in SQL.
 
 ```js
 function update(id, changes) {
