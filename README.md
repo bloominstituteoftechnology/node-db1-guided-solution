@@ -4,7 +4,6 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webd
 
 ## Prerequisites
 
-- [SQLite Studio](https://sqlitestudio.pl/index.rvt?act=download) installed.
 - [This Query Tool Loaded in the browser](https://www.w3schools.com/Sql/tryit.asp?filename=trysql_select_top).
 
 ## Project Setup
@@ -28,16 +27,16 @@ When making changes to the `master` branch, commit the changes and use `git push
 
 Introduce the project for the afternoon. If they are done early, encourage them to study tomorrow's content and follow the tutorials on TK.
 
-## Introduce Relational Databases
+## Introduce Relational Databases and SQL
 
-Quickly use the content on TK to introduce `Relational Databases and SQL`.
+Do a brief review of `Relational Databases` and `SQL` using TK. The students should be familiar with the ideas from the pre-class video.
 
 ## Use SELECT to Query Data
 
 - [Load this in the browser](https://www.w3schools.com/Sql/tryit.asp?filename=trysql_select_top).
 - show how to restore the database by clicking the button on the page.
 - open the `Application` tab on chrome dev tools and show the `Web SQL` node. Every browser gets it's own copy of the data.
-- introduce the `SELECT` statement.
+- review the `SELECT` statement.
 
 ```sql
 select * from customers -- explain the most basic syntax for a select and what the * means
@@ -126,7 +125,7 @@ limit 5
 
 ## Use INSERT to Add Data to a Table
 
-Walk through the syntax of the insert command.
+Review the syntax of the insert command.
 
 ```sql
 -- show basic syntax
@@ -203,9 +202,9 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 [Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
-1. Use `yarn` or `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson.
+1. Use `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson.
 
-2. Create the `data/db-config.js` file and setup knex. Briefly mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
+2. Create the `data/db-config.js` file and setup knex. Mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
 
 ```js
 const knex = require('knex');
@@ -213,7 +212,8 @@ const knex = require('knex');
 const config = {
   client: 'sqlite3',
   connection: {
-    filename: './data/posts.sqlite3',
+    // GOTCHA: this filepath is with respect to the root, not the config file
+    filename: './data/posts.db3',
   },
   useNullAsDefault: true,
 };
@@ -230,7 +230,7 @@ const db = require('../data/db-config.js');
 5. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. Write out the shells for all five helper methods and export them for use in the `post-router`.
 
 ```js
-const db = require('../data/db-setup.js');
+const db = require('../data/db-config.js');
 
 module.exports = {
   find,
