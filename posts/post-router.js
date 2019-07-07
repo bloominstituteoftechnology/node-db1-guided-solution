@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const post = await Post.findById(id);
+    const [ post ] = await Post.findById(id);
   
     if (post) {
       res.json(post);
@@ -35,8 +35,8 @@ router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
-    const post = await Post.add(postData);
-    res.status(201).json(post);
+    const [ id ] = await Post.add(postData);
+    res.status(201).json({ id });
   } catch (err) {
     console.log('POST err', err);
     res.status(500).json({ message: 'Failed to create new post' });

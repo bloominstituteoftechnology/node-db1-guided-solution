@@ -75,18 +75,6 @@ select name from Categories where CategoryId = 2
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
 
-## Use LIKE Operator
-
-Load the example of LIKE on TK and introduce the `%` and `_` wildcards.
-
-```sql
-select distinct City from Customers
-where City like '%ar%'
-order by City
-
-select * from Customers where City like 'A_c%' -- returns Aachen and Anchorage
-```
-
 ## Use ORDER BY clause
 
 ```sql
@@ -202,56 +190,11 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 [Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
-1. Use `npm` to add the `knex` and `sqlite3` libraries. We will discuss why `sqlite3` is necessary in the next lesson.
+1. Show that the `knex` and `sqlite3` libraries are already added. 
 
-2. Create the `data/db-config.js` file and setup knex. Mention that the `config` object is used to tell `knex` how to access the db. This will also be discussed more in the following lesson.
+2. Open `data/db-config.js` file. Mention this is where `knex` is configured, and we'll be learning more about it in the next lesson.
 
-```js
-const knex = require('knex');
-
-const config = {
-  client: 'sqlite3',
-  connection: {
-    // GOTCHA: this filepath is with respect to the root, not the config file
-    filename: './data/posts.db3',
-  },
-  useNullAsDefault: true,
-};
-
-module.exports = knex(config);
-```
-
-4. Open `posts/post-model.js`. Require `db-config` at the top of the file. This will give us access to the query builder.
-
-```js
-const db = require('../data/db-config.js');
-```
-
-5. Explain that we will use knex to build database helper methods. Also explain that `model` often refers to such a file that interfaces with the db for a single resource. Write out the shells for all five helper methods and export them for use in the `post-router`.
-
-```js
-const db = require('../data/db-config.js');
-
-module.exports = {
-  find,
-  findById,
-  add,
-  update,
-  remove,
-};
-
-function find() {}
-
-function findById(id) {}
-
-function add(post) {}
-
-function update(id, changes) {}
-
-function remove(id) {}
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
+3. Open `posts/post-model.js`. Note that `db-config` has been imported, which will give us access to the query builder. Also note the five methods we will be writing in this file.
 
 ## Use Knex to Select
 
@@ -305,41 +248,9 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const posts = await Post.findById(id);
+    // findById resolves to an array
+    const [ post ] = await Post.findById(id);
 
-    // findById resolves to an array, so we must check the length
-    if (posts.length) {
-      res.json(posts);
-    } else {
-      res.status(404).json({ message: 'Could not find post with given id.' })
-    }
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to get post' });
-  }
-```
-
-### Introduce first()
-
-If we prefer our findById method to return a single post instead of an array, we can use a method called `first()`. Refactor the code as follows:
-
-```js
-function findById(id) {
-  // this will now resolve to a single post
-  return db('posts')
-    .where({ id })
-    .first();
-}
-```
-
-```js
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    // change from posts to post
-    const post = await Post.findById(id);
-
-    // we now check if our post is defined
     if (post) {
       res.json(post);
     } else {
@@ -358,7 +269,7 @@ router.get('/:id', async (req, res) => {
 
 ```js
 function add(post) {
-  // this knex statement will throw an error if the post object's keys do not match the columns in the database table
+  // the post object's keys must match the columns in the database table
   return db('posts').insert(post);
 }
 ```
@@ -382,15 +293,22 @@ router.post('/', async (req, res) => {
 
 3. Posts should have both `title` and `contents`. Test using `Postman` with an invalid body. Note the error in the console.
 
-4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. This is an easy fix in our `add()` method
+4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. We can choose to update either the helper method or endpoint
 
 ```js
-async function add(post) {
-  // insert resolves to an array of ids
-  // we can use our findById helper to return the full post instead
-  const [id] = await db('posts').insert(post);
-  return findById(id);
-}
+router.post('/', async (req, res) => {
+  // We would want to validate the body here but are skipping this step to focus on db logic
+  const postData = req.body;
+
+  try {
+    // add returns an array containing an id
+    const [ id ] = await Post.add(postData);
+    res.status(201).json({ id });
+  } catch (err) {
+    console.log('POST err', err);
+    res.status(500).json({ message: 'Failed to create new post' });
+  }
+});
 ```
 
 **wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**

@@ -13,15 +13,14 @@ function find() {
 }
 
 function findById(id) {
-  // we can use first() to get back a single post
-  return db('posts').where({ id }).first();
+  // resolves to a single post in an array
+  return db('posts').where({ id });
 }
 
-async function add(post) {
+function add(post) {
   // insert resolves to an array of ids
-  // we can use our findById helper to return the full post
-  const [ id ] = await db('posts').insert(post);
-  return findById(id);
+  // additional code needed to send back the full post
+  return db('posts').insert(post);
 }
 
 function update(id, changes) {
