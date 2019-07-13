@@ -1,13 +1,13 @@
 const express = require('express');
 
-// Import the post model
-const Post = require('./post-model.js');
+// database access using knex
+const db = require('../data/db-config.js');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await db('posts');
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: 'Failed to get posts' });
@@ -18,7 +18,8 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const [ post ] = await Post.findById(id);
+    // returns an array containing a single post
+    const [ post ] = await db('posts').where({ id });
   
     if (post) {
       res.json(post);
@@ -35,7 +36,8 @@ router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
-    const [ id ] = await Post.add(postData);
+      // the post object's keys must match the columns in the database table
+    const [ id ] = await db('posts').insert(post);
     res.status(201).json({ id });
   } catch (err) {
     console.log('POST err', err);
@@ -50,7 +52,9 @@ router.put('/:id', async (req, res) => {
 
   try {
     // update resolves to a count of records updated
-    const count = await Post.update(id, changes);
+    const count = await db('posts')
+      .where({ id })
+      .update(changes);;
 
     if (count) {
       res.json({ updated: count });
@@ -68,7 +72,9 @@ router.delete('/:id', async (req, res) => {
 
   try {
     // remove resolves to a count of records removed
-    const count = await Post.remove(id);
+    const count = await db('posts')
+      .where({ id })
+      .del();
 
     if (count) {
       res.json({ deleted: count });
