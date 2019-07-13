@@ -234,7 +234,6 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    // findById resolves to an array
     const [ post ] = await db('posts').where({ id });
 
     if (post) {
@@ -272,7 +271,7 @@ router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
-    const post = await Post.add(postData);
+    const post = await db('posts').insert(postData);
     res.status(201).json(post);
   } catch (err) {
     console.log('POST err', err);
@@ -290,7 +289,7 @@ router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
-    // add returns an array containing an id
+    // insert returns an array containing an id
     const [ id ] = await db('posts').insert(postData);
     res.status(201).json({ id });
   } catch (err) {
