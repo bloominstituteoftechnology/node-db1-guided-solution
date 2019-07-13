@@ -194,32 +194,26 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 2. Open `data/db-config.js` file. Mention this is where `knex` is configured, and we'll be learning more about it in the next lesson.
 
-3. Open `posts/post-model.js`. Note that `db-config` has been imported, which will give us access to the query builder. Also note the five methods we will be writing in this file.
+3. Open `posts/post-router.js`. Note that `db-config` has been imported, which will give us access to the query builder. 
 
 ## Use Knex to Select
 
-1. Write a select all statement for the `find()` method
+1. When writing `GET /api/accounts`, instead of using prewritten database models, we can access the database directly using a knex select statement like so: 
 
 ```js
-function find() {
-  // this will resolve to an array of posts
-  return db('posts');
+router.get('/', async (req, res) => {
+  const posts = await db('posts');
 }
 ```
 
-Mention that knex often has multiple ways to do the same thing. For example, they should also use `db.select('*').from('posts')`. This syntax looks more like the original SQL statements.
+Mention that knex often has multiple ways to do the same thing. For example, they could also use `db.select('*').from('posts')`. This syntax looks more like the original SQL statements.
 
-2. Use `find()` to write the `GET /api/posts/` endpoint in `posts/post-router`.
-
-```js
-// Import the post model near the top of the file
-const Post = require('./post-model.js');
-```
+2. Finish the endpoint as per usual. Note that because all knex queries are promises we have to use try/catch. 
 
 ```js
 router.get('/', async (req, res) => {
   try {
-    const posts = await Posts.find();
+    const posts = await db('posts');
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: 'Failed to get posts' });
@@ -229,19 +223,11 @@ router.get('/', async (req, res) => {
 
 3. Test out this endpoint using `Postman` or the browser
 
-### You Do (estimated 8m to complete)
+### You Do (estimated 5m to complete)
 
-Write the `findById()` model method and the `GET api/posts/:id` endpoint. Mention to look at the where clause in the `knex` docs.
+Write the `GET api/posts/:id` endpoint. Mention to look at the where clause in the `knex` docs.
 
 One possible solution:
-
-```js
-function findById(id) {
-  // we are passing an id object into the where method
-  // this will resolve to an array containing a single post
-  return db('posts').where({ id });
-}
-```
 
 ```js
 router.get('/:id', async (req, res) => {
@@ -249,7 +235,7 @@ router.get('/:id', async (req, res) => {
 
   try {
     // findById resolves to an array
-    const [ post ] = await Post.findById(id);
+    const [ post ] = await db('posts').where({ id });
 
     if (post) {
       res.json(post);
@@ -265,20 +251,24 @@ router.get('/:id', async (req, res) => {
 
 ## Use Knex to Insert
 
-1. Write an Insert statement for our `add()` method.
-
-```js
-function add(post) {
-  // the post object's keys must match the columns in the database table
-  return db('posts').insert(post);
-}
-```
-
-2. Use `add()` to write the `POST /api/posts/` endpoint in `posts/post-router`.
+1. Write an Insert statement using knex.
 
 ```js
 router.post('/', async (req, res) => {
-  // We would want to validate the body here but are skipping this step to focus on db logic
+  const postData = req.body;
+
+  try {
+    const post = await db('posts').insert(postData);
+  } catch (err) {
+
+  }
+});
+```
+
+2. Finish writing the `POST /api/posts/` endpoint as expected.
+
+```js
+router.post('/', async (req, res) => {
   const postData = req.body;
 
   try {
@@ -293,16 +283,15 @@ router.post('/', async (req, res) => {
 
 3. Posts should have both `title` and `contents`. Test using `Postman` with an invalid body. Note the error in the console.
 
-4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. We can choose to update either the helper method or endpoint
+4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. We can update our endpoint.
 
 ```js
 router.post('/', async (req, res) => {
-  // We would want to validate the body here but are skipping this step to focus on db logic
   const postData = req.body;
 
   try {
     // add returns an array containing an id
-    const [ id ] = await Post.add(postData);
+    const [ id ] = await db('posts').insert(postData);
     res.status(201).json({ id });
   } catch (err) {
     console.log('POST err', err);
@@ -315,51 +304,37 @@ router.post('/', async (req, res) => {
 
 ## Use Knex to Update and Delete
 
-Show them the syntax for updating in `knex`, emphasis on the importance of the where clause. Note that where comes before update, unlike in SQL.
-
-```js
-function update(id, changes) {
-  // update resolves to a count of rows updated
-  // additional code would be needed to send back the updated post
-  return db('posts')
-    .where({ id })
-    .update(changes);
-}
-```
-
-### You Do (estimated 3m to complete)
-
-Write the `remove()` model method. Mention to look for the `del()/delete()` method in the `knex` docs.
-
-One possible solution:
-
-```js
-function remove(id) {
-  // del/delete resolves to a count of rows removed
-  // additional code would be needed to send back the removed post
-  return db('posts')
-    .where({ id })
-    .del();
-}
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Finish Endpoints, show if time permits (10 minutes)
-
-If there is extra time, review writing the `PUT` and `DELETE` endpoints, using our model methods.
-
-1. Write `PUT /api/posts/:id`
+1. Show them the syntax for updating in `knex`, emphasis on the importance of the where clause. Note that where comes before update, unlike in SQL.
 
 ```js
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  // Once again we would want to validate the body here
   const changes = req.body;
 
   try {
     // update resolves to a count of records updated
-    const count = await Post.update(id, changes);
+    const count = await db('accounts')
+      .where({ id })
+      .update(changes);
+
+  } catch (err) {
+
+  }
+});
+```
+
+2. Finish the endpoint. 
+
+```js
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  try {
+    // update resolves to a count of records updated
+    const count = await db('accounts')
+      .where({ id })
+      .update(changes);
 
     if (count) {
       res.json({ updated: count });
@@ -373,15 +348,21 @@ router.put('/:id', async (req, res) => {
 });
 ```
 
-2. Write `DELETE /api/posts/:id`
+### You Do (estimated 5m to complete)
+
+Write `DELETE /api/accounts`. Mention to look for the `del()/delete()` method in the `knex` docs.
+
+One possible solution:
 
 ```js
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    // remove resolves to a count of records removed
-    const count = await Post.remove(id);
+    // del() resolves to a count of records removed
+    const count = await db('accounts')
+      .where({ id })
+      .del();
 
     if (count) {
       res.json({ deleted: count });
@@ -394,4 +375,4 @@ router.delete('/:id', async (req, res) => {
 });
 ```
 
-3. Test both endpoints with `Postman`.
+Time permitting, test both endpoints with `Postman`.
