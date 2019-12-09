@@ -4,7 +4,7 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webd
 
 ## Prerequisites
 
-- [This Query Tool Loaded in the browser](https://www.w3schools.com/Sql/tryit.asp?filename=trysql_select_top).
+- [SQLite Studio Installed](https://sqlitestudio.pl/index.rvt?act=download).
 
 ## Project Setup
 
@@ -190,15 +190,15 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 [Load docs in the browser](https://knexjs.org). Browse Query Builder sections the docs, showing we can build SQL statements with JS
 
-1. Show that the `knex` and `sqlite3` libraries are already added. 
+1. Show that the `knex` and `sqlite3` libraries are already added.
 
 2. Open `data/db-config.js` file. Mention this is where `knex` is configured, and we'll be learning more about it in the next lesson.
 
-3. Open `posts/post-router.js`. Note that `db-config` has been imported, which will give us access to the query builder. 
+3. Open `posts/post-router.js`. Note that `db-config` has been imported, which will give us access to the query builder.
 
 ## Use Knex to Select
 
-1. When writing `GET /api/accounts`, instead of using prewritten database models, we can access the database directly using a knex select statement like so: 
+1. When writing `GET /api/accounts`, instead of using prewritten database models, we can access the database directly using a knex select statement like so:
 
 ```js
 router.get('/', async (req, res) => {
@@ -208,15 +208,15 @@ router.get('/', async (req, res) => {
 
 Mention that knex often has multiple ways to do the same thing. For example, they could also use `db.select('*').from('posts')`. This syntax looks more like the original SQL statements.
 
-2. Finish the endpoint as per usual. Note that because all knex queries are promises we have to use try/catch. 
+2. Finish the endpoint as per usual. Note that because all knex queries are promises we have to use try/catch.
 
 ```js
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const posts = await db('posts');
+    const posts = await db("posts");
     res.json(posts);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get posts' });
+    res.status(500).json({ message: "Failed to get posts" });
   }
 });
 ```
@@ -253,29 +253,27 @@ router.get('/:id', async (req, res) => {
 1. Write an Insert statement using knex.
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const postData = req.body;
 
   try {
-    const post = await db('posts').insert(postData);
-  } catch (err) {
-
-  }
+    const post = await db("posts").insert(postData);
+  } catch (err) {}
 });
 ```
 
 2. Finish writing the `POST /api/posts/` endpoint as expected.
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const postData = req.body;
 
   try {
-    const post = await db('posts').insert(postData);
+    const post = await db("posts").insert(postData);
     res.status(201).json(post);
   } catch (err) {
-    console.log('POST err', err);
-    res.status(500).json({ message: 'Failed to create new post' });
+    console.log("POST err", err);
+    res.status(500).json({ message: "Failed to create new post" });
   }
 });
 ```
@@ -285,16 +283,16 @@ router.post('/', async (req, res) => {
 4. Test using `Postman` with a valid body. Note that the response is an array containing the id, rather than the full post. We can update our endpoint.
 
 ```js
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const postData = req.body;
 
   try {
     // insert returns an array containing an id
-    const [ id ] = await db('posts').insert(postData);
+    const [id] = await db("posts").insert(postData);
     res.status(201).json({ id });
   } catch (err) {
-    console.log('POST err', err);
-    res.status(500).json({ message: 'Failed to create new post' });
+    console.log("POST err", err);
+    res.status(500).json({ message: "Failed to create new post" });
   }
 });
 ```
@@ -306,43 +304,40 @@ router.post('/', async (req, res) => {
 1. Show them the syntax for updating in `knex`, emphasis on the importance of the where clause. Note that where comes before update, unlike in SQL.
 
 ```js
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
   try {
     // update resolves to a count of records updated
-    const count = await db('accounts')
+    const count = await db("accounts")
       .where({ id })
       .update(changes);
-
-  } catch (err) {
-
-  }
+  } catch (err) {}
 });
 ```
 
-2. Finish the endpoint. 
+2. Finish the endpoint.
 
 ```js
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
   try {
     // update resolves to a count of records updated
-    const count = await db('accounts')
+    const count = await db("accounts")
       .where({ id })
       .update(changes);
 
     if (count) {
       res.json({ updated: count });
     } else {
-      res.status(404).json({ message: 'Could not find post with given id' });
+      res.status(404).json({ message: "Could not find post with given id" });
     }
   } catch (err) {
-    console.log('PUT error', err);
-    res.status(500).json({ message: 'Failed to update post' });
+    console.log("PUT error", err);
+    res.status(500).json({ message: "Failed to update post" });
   }
 });
 ```
@@ -354,22 +349,22 @@ Write `DELETE /api/accounts`. Mention to look for the `del()/delete()` method in
 One possible solution:
 
 ```js
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     // del() resolves to a count of records removed
-    const count = await db('accounts')
+    const count = await db("accounts")
       .where({ id })
       .del();
 
     if (count) {
       res.json({ deleted: count });
     } else {
-      res.status(404).json({ message: 'Could not find post with given id' });
+      res.status(404).json({ message: "Could not find post with given id" });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete post' });
+    res.status(500).json({ message: "Failed to delete post" });
   }
 });
 ```
