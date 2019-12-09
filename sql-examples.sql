@@ -1,3 +1,5 @@
+-- SQL Commands for Northwind Database
+
 -- READ data
 -- list of all our customers
 -- select columns from table
