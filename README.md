@@ -5,6 +5,7 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webd
 ## Prerequisites
 
 - [SQLite Studio Installed](https://sqlitestudio.pl/index.rvt?act=download).
+- [This Web SQL Tool Loaded in a chrome or chromium browser tab](https://www.w3schools.com/Sql/trysql.asp?filename=trysql_select_all). It does not work well on Firefox.
 
 ## Project Setup
 
@@ -33,7 +34,7 @@ Do a brief review of `Relational Databases` and `SQL` using TK. The students sho
 
 ## Use SELECT to Query Data
 
-- [Load this in the browser](https://www.w3schools.com/Sql/tryit.asp?filename=trysql_select_top).
+- [Load this in the browser](https://www.w3schools.com/Sql/trysql.asp?filename=trysql_select_all).
 - show how to restore the database by clicking the button on the page.
 - open the `Application` tab on chrome dev tools and show the `Web SQL` node. Every browser gets it's own copy of the data.
 - review the `SELECT` statement.
@@ -310,9 +311,7 @@ router.put("/:id", async (req, res) => {
 
   try {
     // update resolves to a count of records updated
-    const count = await db("accounts")
-      .where({ id })
-      .update(changes);
+    const count = await db("accounts").where({ id }).update(changes);
   } catch (err) {}
 });
 ```
@@ -326,9 +325,7 @@ router.put("/:id", async (req, res) => {
 
   try {
     // update resolves to a count of records updated
-    const count = await db("accounts")
-      .where({ id })
-      .update(changes);
+    const count = await db("accounts").where({ id }).update(changes);
 
     if (count) {
       res.json({ updated: count });
@@ -354,9 +351,7 @@ router.delete("/:id", async (req, res) => {
 
   try {
     // del() resolves to a count of records removed
-    const count = await db("accounts")
-      .where({ id })
-      .del();
+    const count = await db("accounts").where({ id }).del();
 
     if (count) {
       res.json({ deleted: count });
