@@ -1,5 +1,5 @@
 {
-  "name": "node-db1-guided",
+  "name": "node-db1-guided-solution",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,11 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "knex": "^0.20.11",
-    "sqlite3": "^4.1.1"
+    "knex": "^0.21.12",
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "eslint": "^7.15.0",
+    "nodemon": "^2.0.6"
   }
 }
