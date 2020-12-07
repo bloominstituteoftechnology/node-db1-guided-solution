@@ -9,28 +9,15 @@ Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webd
 
 ## Project Setup
 
-The [starter code](https://github.com/LambdaSchool/webdb-i-guided) for this project is configured to run the server by typing `yarn server` or `npm run server`. The server will restart automatically on changes.
-
-## How to Contribute
-
-- clone the [starter code](https://github.com/LambdaSchool/webdb-i-guided).
-- create a solution branch: `git checkout -b solution`.
-- add this repository as a remote: `git remote add solution https://github.com/LambdaSchool/webdb-i-guided-solution`
-- pull from this repository's `master` branch into the `solution` branch in your local folder `git pull solution master:solution --force`.
-
-A this point you should have a `master` branch pointing to the student's repository and a `solution` branch with the latest changes added to the solution repository.
-
-When making changes to the `solution` branch, commit the changes and type `git push solution solution:master` to push them to this repository.
-
-When making changes to the `master` branch, commit the changes and use `git push origin master` to push them to the student's repository.
+The [starter code](https://github.com/LambdaSchool/node-db1-guided) for this project is configured to run the server by typing `npm run server`. The server will restart automatically on changes.
 
 ## Introduce Module Challenge
 
-Introduce the project for the afternoon. If they are done early, encourage them to study tomorrow's content and follow the tutorials on TK.
+Introduce the project for the afternoon. If they are done early, encourage them to study tomorrow's content and follow the tutorials in Canvas.
 
 ## Introduce Relational Databases and SQL
 
-Do a brief review of `Relational Databases` and `SQL` using TK. The students should be familiar with the ideas from the pre-class video.
+Do a brief review of `Relational Databases` and `SQL` using Canvas. The students should be familiar with the ideas from the pre-class video.
 
 ## Use SELECT to Query Data
 
