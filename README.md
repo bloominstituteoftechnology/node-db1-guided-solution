@@ -191,7 +191,7 @@ Explain that the library also provides a way to use raw SQL for things that are 
 - `db('foo-table').where('id', id)` is an alternative for the above, which might work better when we get to Postgres during Build
 - `db('foo-table').where('id', id).first()` will resolve to the **record** we want (if the id is unique for a table) or **undefined**
 - `db('foo-table').insert({ bar: 'baz' })` resolves to an **array** containing the **ids** of the newly created records
-- `db('foo-table').where('id', id).update({ bar: 'new bar', baz: 'new baz' })` resolves to the **number of rows** affected by the update
+- `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of rows** affected by the update
 - `db('foo-table').where('id', id).delete()` resolves to the **number of rows** affected by the delete
 
 2. Flesh out the middleware functions inside `post-router.js` so we keep the code as DRY as possible (See code inside `post-router.js`.)
