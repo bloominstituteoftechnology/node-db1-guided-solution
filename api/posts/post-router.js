@@ -49,7 +49,7 @@ router.post('/', checkPayload, async (req, res, next) => {
 
 router.put('/:id', checkPayload, checkId, async (req, res, next) => {
   try {
-    const updatedPost = await Post.update(req.params.id, req.body) // these are verified to be good
+    const updatedPost = await Post.update(req.params.id, req.body) // these are verified to be good, DO NOT USE req.post!
     res.status(200).json(updatedPost);
   } catch (err) { next(err); }
 });
