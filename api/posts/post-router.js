@@ -9,7 +9,7 @@ async function checkId(req, res, next) {
   try {
     const post = await Post.getById(req.params.id)
     if (post) {
-      req.post = post; // used in the [GET] api/posts/:id endpoint
+      req.post = post; // req.post is used in [GET] api/posts/:id endpoint saving an extra trip to the db
       next();
     } else {
       res.status(404).json({ message: 'Post not found' });
@@ -20,7 +20,6 @@ async function checkId(req, res, next) {
 function checkPayload(req, res, next) {
   const { title, contents } = req.body
   if (title && contents) {
-    req.post = { title, contents } // used in the [POST] api/posts endpoint
     next();
   } else {
     res.status(400).json({ message: 'title and contents are required' });
@@ -42,14 +41,14 @@ router.get('/:id', checkId, async (req, res) => {
 
 router.post('/', checkPayload, async (req, res, next) => {
   try {
-    const newPost = await Post.create(req.post) // req.post is sure to have the correct shape
+    const newPost = await Post.create(req.body) // req.body is sure to have the correct shape
     res.status(201).json(newPost);
   } catch (err) { next(err); }
 });
 
 router.put('/:id', checkPayload, checkId, async (req, res, next) => {
   try {
-    const updatedPost = await Post.update(req.params.id, req.body) // these are verified to be good, DO NOT USE req.post!
+    const updatedPost = await Post.update(req.params.id, req.body) // id and body are verified to be good
     res.status(200).json(updatedPost);
   } catch (err) { next(err); }
 });
