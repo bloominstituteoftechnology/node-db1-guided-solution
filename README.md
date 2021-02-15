@@ -184,7 +184,8 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 ## Use Knex
 
-1. Flesh out the `post-model.js` comparing out the Knex syntax with the SQL underneath. (See comments inside `post-model.js`.)
+1. Smoke-test with Postman or Insomnia that all CRUD endpoints are wired and ready to go
+2. Flesh out the `post-model.js` comparing out the Knex syntax with the SQL underneath. (See comments inside `post-model.js`.)
 
 - `db('foo-table')` returns a promise that resolves to an **array** with all records in the table
 - `db('foo-table').where({ id })` returns a promise that resolves to an **array** with all items that satisfy the where
@@ -194,6 +195,5 @@ Explain that the library also provides a way to use raw SQL for things that are 
 - `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of rows** affected by the update
 - `db('foo-table').where('id', id).delete()` resolves to the **number of rows** affected by the delete
 
-2. Flesh out the middleware functions inside `post-router.js` so we keep the code as DRY as possible (See code inside `post-router.js`.)
-
-3. Fix the endpoints inside `post-router.js` noting how clean they are since the model functions and middlewares do all the heavy lifting
+3. Flesh out the middleware functions inside `post-router.js` so we keep the code as DRY as possible (See code inside `post-router.js`.)
+4. Fix the endpoints inside `post-router.js` noting how clean they are since the model functions and middlewares do all the heavy lifting
