@@ -9,11 +9,11 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "knex": "^0.95.2",
+    "knex": "^0.95.4",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.22.0",
+    "eslint": "^7.26.0",
     "nodemon": "^2.0.7"
   }
 }
