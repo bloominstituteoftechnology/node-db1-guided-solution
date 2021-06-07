@@ -189,7 +189,7 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 - `db('foo-table')` returns a promise that resolves to an **array** with all records in the table
 - `db('foo-table').where({ id })` returns a promise that resolves to an **array** with all items that satisfy the where
-- `db('foo-table').where('id', id)` is an alternative for the above, which might work better when we get to Postgres during Build
+- `db('foo-table').where('id', id)` is an alternative for the above
 - `db('foo-table').where('id', id).first()` will resolve to the **record** we want (if the id is unique for a table) or **undefined**
 - `db('foo-table').insert({ bar: 'baz' })` resolves to an **array** containing the **ids** of the newly created records
 - `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of rows** affected by the update
