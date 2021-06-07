@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "ketchup": "git fetch && git reset --hard origin/lecture",
+    "resetdb": "knex migrate:rollback && knex migrate:latest && knex seed:run"
   },
   "repository": "https://github.com/LambdaSchool/node-db1-guided-solution",
   "license": "MIT",
