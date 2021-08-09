@@ -19,152 +19,74 @@ Introduce the project for the afternoon. If they are done early, encourage them 
 
 Do a brief review of `Relational Databases` and `SQL` using Canvas. The students should be familiar with the ideas from the pre-class video.
 
-## Use SELECT to Query Data
+## Use A Playground to Query Data
 
 - [Load this in the browser](https://www.w3schools.com/Sql/trysql.asp?filename=trysql_select_all).
 - show how to restore the database by clicking the button on the page.
 - open the `Application` tab on chrome dev tools and show the `Web SQL` node. Every browser gets it's own copy of the data.
-- review the `SELECT` statement.
 
 ```sql
-select * from customers -- explain the most basic syntax for a select and what the * means
+-- SELECT ----------------------------------------------------------------------------
 
--- next show how to cherry pick the columns we want on the results and that they can be on any order
-select City, CustomerName, ContactName from Customers
+-- 1- discuss SELECT, capitalization of keywords, of table names, semicolon, star
+SELECT * FROM customers;
+-- LEARNER: get all the records from the employees table
+SELECT * FROM employees;
 
--- next show how to filter using the where clause
-select City, CustomerName, ContactName
-from Customers
-where City = 'Berlin' -- this online tool is case sensitive when comparing strings, that is normally not the case
+-- 2- discuss order of columns, dot notation
+SELECT contactname, customername, city, country FROM customers;
+SELECT customers.city, customers.* FROM customers;
 
--- introduce and and or operator
-select City, CustomerName, ContactName
-from Customers
-where Country = 'France' and City = 'Paris'
+-- LEARNER: select the id, first name and last name columns from the employees table
+SELECT employeeid, firstname, lastname FROM employees;
 
--- change it to use or
-where Country = 'France' or City = 'Paris'
+-- 3- discuss combining columns to create new ones
+SELECT (firstname || ' ' || lastname) as fullname FROM employees;
+
+-- LEARNER: select a full address column concatenating other columns
+SELECT (postalcode || ' ' || country) as theaddress FROM customers;
+
+-- 4- dicuss WHERE, AND, OR, LIKE, strings, comparison operators, wildcards in strings
+SELECT * FROM customers WHERE country = 'Spain' AND postalcode > 20000;
+SELECT * FROM customers WHERE country LIKE '%land' AND postalcode > 20000;
+
+-- LEARNER: find employees whose records do not mention university
+SELECT * FROM employees WHERE notes NOT LIKE '%university%';
+-- LEARNER: find all the products that are beverages
+SELECT * FROM products WHERE categoryid = 1;
+-- LEARNER: find all the orders made after Jan 1st 1997
+SELECT * FROM orders WHERE orderdate > '1997-01-01';
+
+-- 5- discuss ORDER BY, ASC, DESC, LIMIT, note that WHERE must come before ORDER BY
+SELECT * FROM customers ORDER BY country DESC, city ASC LIMIT 4;
+
+-- LEARNER: get all products sorting them by category ascending and then by price descending
+SELECT * FROM products ORDER BY categoryid ASC, price DESC;
+
+-- INSERT ----------------------------------------------------------------------------
+
+-- 6- discuss INSERT
+INSERT INTO shippers (shippername, phone) VALUES ('Ac', '123456');
+
+-- LEARNER: insert another shipper, missing the phone
+INSERT INTO shippers (shippername) VALUES ('Ac 2');
+-- LEARNER: find all the shippers whose phone IS null
+SELECT * FROM shippers WHERE phone IS null;
+
+-- UPDATE ----------------------------------------------------------------------------
+
+-- 7- discuss UPDATE and the importance of the WHERE clause
+UPDATE shippers SET shippername = 'Acme', phone = '1234' WHERE shipperid = 4;
+-- LEARNER: add the missing phone to the second shipper we added
+UPDATE shippers SET shippername = 'Acme 2', phone = '1234' WHERE shipperid = 5;
+
+-- DELETE ----------------------------------------------------------------------------
+
+-- 7- discuss DELETE and the importance of the WHERE clause
+DELETE FROM shippers WHERE shipperid = 4;
+-- LEARNER: delete the second shipper we added
+DELETE FROM shippers WHERE shipperid = 4;
 ```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-### You Do (estimated 3m to complete)
-
-Ask student to write a query to get the list of products with category id of 2: how many records they get?
-Ask student to write a query to get the the name of category id of 2: what is the name?
-
-A possible solution:
-
-```sql
-select * from products where CategoryId = 2
-
-select name from Categories where CategoryId = 2
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Use ORDER BY clause
-
-```sql
-select * from products order by price -- can be desc or asc, it is asc by default
-
--- what if we want it descending
-select * from products order by price desc
-```
-
-### You Do (estimated 3m to complete)
-
-Ask student to write a query to get the list of products that cost more than 50 organized by price descending.
-
-A possible solution:
-
-```sql
-select * from products
-where price > 50        -- note that where must come before order by
-order by price desc
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Use LIMIT Operator
-
-Limit can be used to show a limited number of records.
-We can use it with an order by statement to show to 5 most expensive products
-
-```sql
-select * from products
-order by price desc
-limit 5
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Use INSERT to Add Data to a Table
-
-Review the syntax of the insert command.
-
-```sql
--- show basic syntax
--- we can add fields in any order, the values just need to be in the same ordinal position
--- note the id will automatically be assigned
-insert into Customers (Country, CustomerName, ContactName, Address, City, PostalCode)
-values ('USA', 'Lambda School', 'Austen Allred', '1 Lambda Court', 'Provo', '84601');
-
--- get the inserted record
-select * from customers order by id desc limit 3
-```
-
-### You Do (estimated 3m to complete)
-
-Ask student to insert a new shipper into the Shippers table
-
-A possible solution:
-
-```sql
-insert into Shippers ( ShipperName, Phone )
-values ( 'Ship2U', '(555) 666-7777')
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Use UPDATE to Modify Data
-
-```sql
-update Customers set City = 'Silicon Valley'
-where CustomerName = 'Lambda School'
-```
-
-```sql
--- demonstrate what happens when the where clause is missing
-update Customers set City = 'Silicon Valley'
--- reset the database
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-## Use DELETE to Remove Data
-
-```sql
-delete from Customers
--- always remember to have a where clause or it will delete all records in the table
-where CustomerName = 'Around the Horn'
-```
-
-### You Do (estimated 3m to complete)
-
-Ask student to delete all customers from the UK
-
-A possible solution:
-
-```sql
-delete from Customer
-where Country = 'UK'
--- should delete 7 records
-```
-
-**wait for students to catch up, use a `yes/no` poll to let students tell you when they are done**
-
-**Take a break if it's a good time**
 
 ## Introduce Query Builders
 
