@@ -188,12 +188,12 @@ Explain that the library also provides a way to use raw SQL for things that are 
 2. Flesh out the `post-model.js` comparing out the Knex syntax with the SQL underneath. (See comments inside `post-model.js`.)
 
 - `db('foo-table')` returns a promise that resolves to an **array** with all records in the table
-- `db('foo-table').where({ id })` returns a promise that resolves to an **array** with all items that satisfy the where
-- `db('foo-table').where('id', id)` is an alternative for the above
-- `db('foo-table').where('id', id).first()` will resolve to the **record** we want (if the id is unique for a table) or **undefined**
-- `db('foo-table').insert({ bar: 'baz' })` resolves to an **array** containing the **ids** of the newly created records
-- `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of rows** affected by the update
-- `db('foo-table').where('id', id).delete()` resolves to the **number of rows** affected by the delete
+- `db('foo-table').where({ role: 'Student', active: true })` resolves to an **array** of all records that satisfy the where
+- `db('foo-table').where('name', 'Mary')` is an alternative for when there is just one where condition
+- `db('foo-table').where('id', 7).first()` will resolve to the **record** we want (if the id is unique for a table) or **undefined**
+- `db('foo-table').insert({ bar: 'baz' })` resolves to an **array** containing the **ids of the records** inserted into the table
+- `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of records** affected by the update
+- `db('foo-table').where('id', id).delete()` resolves to the **number of records** affected by the delete
 
 3. Flesh out the middleware functions inside `post-router.js` so we keep the code as DRY as possible (See code inside `post-router.js`.)
 4. Fix the endpoints inside `post-router.js` noting how clean they are since the model functions and middlewares do all the heavy lifting
