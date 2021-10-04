@@ -30,7 +30,7 @@ Do a brief review of `Relational Databases` and `SQL` using Canvas. The students
 
 -- 1- discuss SELECT, capitalization of keywords, of table names, semicolon, star
 SELECT * FROM customers;
--- LEARNER: get all the records from the employees table
+-- LEARNER: get all the records, all columns, from the employees table
 SELECT * FROM employees;
 
 -- 2- discuss order of columns, dot notation
