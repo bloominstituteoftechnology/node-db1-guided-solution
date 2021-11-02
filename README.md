@@ -1,7 +1,5 @@
 # Introduction to Relational Databases, SQL and Knex Solution
 
-Starter code is here: [DB I Guided Project](https://github.com/LambdaSchool/webdb-i-guided).
-
 ## Prerequisites
 
 - [SQLite Studio Installed](https://sqlitestudio.pl/index.rvt?act=download).
