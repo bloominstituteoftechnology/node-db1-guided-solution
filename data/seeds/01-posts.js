@@ -1,5 +1,5 @@
 
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex) {
   return knex('posts').truncate()
     .then(function () {
       return knex('posts').insert([
@@ -15,6 +15,6 @@ exports.seed = function(knex, Promise) {
         { title: "post-11", contents: "Act without doing; work without effort." },
         { title: "post-12", contents: "Do you have the patience to wait until your mud settles and the water is clear? Can you remain unmoving until the right action arises by itself?" },
         { title: "post-13", contents: "He who tries to shine dims his own light. He who defines himself can't know who he really is. He who clings to his work will do nothing that endures. Just do your job, then let go." }
-      ]);
-    });
-};
+      ])
+    })
+}
