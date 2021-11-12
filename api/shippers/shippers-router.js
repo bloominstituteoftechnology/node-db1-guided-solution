@@ -1,5 +1,5 @@
 const express = require('express')
-const Post = require('./post-model')
+const Shipper = require('./shippers-model')
 
 const router = express.Router()
 
@@ -7,55 +7,55 @@ const router = express.Router()
 // these could live in a separate module
 async function checkId(req, res, next) {
   try {
-    const post = await Post.getById(req.params.id)
-    if (post) {
-      req.post = post // req.post is used in [GET] api/posts/:id endpoint saving an extra trip to the db
+    const shipper = await Shipper.getById(req.params.shipperid)
+    if (shipper) {
+      req.shipper = shipper // req.shipper is used in [GET] api/shippers/:shipperid endpoint saving an extra trip to the db
       next()
     } else {
-      res.status(404).json({ message: 'Post not found' })
+      next({ status: 404, message: 'Shipper not found' })
     }
   } catch (err) { next(err) }
 }
 
 function checkPayload(req, res, next) {
-  const { title, contents } = req.body
-  if (title && contents) {
+  const { shippername, phone } = req.body
+  if (shippername && phone) {
     next()
   } else {
-    res.status(400).json({ message: 'title and contents are required' })
+    next({ status: 404, message: 'shippername and phone are required' })
   }
 }
 
 // ENDPOINTS
 router.get('/', async (req, res, next) => {
   try {
-    const posts = await Post.get()
-    res.json(posts)
+    const shippers = await Shipper.get()
+    res.json(shippers)
   } catch (err) { next(err) } // use next(err) to avoid repeating the same error logic
 })
 
-router.get('/:id', checkId, async (req, res) => {
+router.get('/:shipperid', checkId, async (req, res) => {
   // see how skinny the endpoint becomes thanks to middleware?
-  res.status(200).json(req.post)
+  res.status(200).json(req.shipper)
 })
 
 router.post('/', checkPayload, async (req, res, next) => {
   try {
-    const newPost = await Post.create(req.body) // req.body is sure to have the correct shape
-    res.status(201).json(newPost)
+    const newShipper = await Shipper.create(req.body) // req.body is sure to have the correct shape
+    res.status(201).json(newShipper)
   } catch (err) { next(err) }
 })
 
-router.put('/:id', checkPayload, checkId, async (req, res, next) => {
+router.put('/:shipperid', checkPayload, checkId, async (req, res, next) => {
   try {
-    const updatedPost = await Post.update(req.params.id, req.body) // id and body are verified to be good
-    res.status(200).json(updatedPost)
+    const updatedShipper = await Shipper.update(req.params.shipperid, req.body) // id and body are verified to be good
+    res.status(200).json(updatedShipper)
   } catch (err) { next(err) }
 })
 
-router.delete('/:id', checkId, async (req, res, next) => {
+router.delete('/:shipperid', checkId, async (req, res, next) => {
   try {
-    const deletedPost = await Post.remove(req.params.id)
+    const deletedPost = await Shipper.remove(req.params.shipperid)
     res.status(200).json(deletedPost)
   } catch (err) { next(err) }
 })
