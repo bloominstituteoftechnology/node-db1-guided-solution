@@ -66,7 +66,3 @@ A **Query Builder (we'll use Knex)** translates between the API language (JS for
 An Object Relational Mapper (ORM, ex. Sequelize and Bookshelf) is another way to connect an API to a RDBMS.
 
 ORMs are more complex because they do more than a simple Query Builder.
-
-```
-
-```

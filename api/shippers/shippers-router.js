@@ -55,8 +55,8 @@ router.put('/:shipperid', checkPayload, checkId, async (req, res, next) => {
 
 router.delete('/:shipperid', checkId, async (req, res, next) => {
   try {
-    const deletedPost = await Shipper.remove(req.params.shipperid)
-    res.status(200).json(deletedPost)
+    const deletedShipper = await Shipper.remove(req.params.shipperid)
+    res.status(200).json(deletedShipper)
   } catch (err) { next(err) }
 })
 
