@@ -5,7 +5,7 @@
   "scripts": {
     "server": "nodemon index.js",
     "ketchup": "git fetch && git reset --hard origin/lecture",
-    "resetdb": "knex migrate:rollback && knex migrate:latest && knex seed:run"
+    "resetdb": "cp -rf ./data/northwind/backup.db3 ./data/northwind.db3"
   },
   "repository": "https://github.com/LambdaSchool/node-db1-guided-solution",
   "license": "MIT",
