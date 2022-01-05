@@ -96,6 +96,8 @@ Explain that the library also provides a way to use raw SQL for things that are 
 
 1. Smoke-test with Postman or Insomnia that all CRUD endpoints are wired and ready to go
 2. Flesh out the `shippers-model.js` comparing the Knex syntax with the raw SQL. (See comments inside `shippers-model.js`.)
+3. If there's time flesh out `shippers-middleware.js`.
+4. Fix the endpoints inside `shippers-router.js` noting how clean they are since the model functions and middlewares do all the heavy lifting
 
 - `db('foo-table')` returns a promise that resolves to an **array** with all records in the table
 - `db('foo-table').where({ role: 'Student', active: true })` resolves to an **array** of all records that satisfy the where
@@ -104,6 +106,3 @@ Explain that the library also provides a way to use raw SQL for things that are 
 - `db('foo-table').insert({ bar: 'baz' })` resolves to an **array** containing the **ids of the records** inserted into the table
 - `db('foo-table').where('id', id).update({ bar: 'new bar' })` resolves to the **number of records** affected by the update
 - `db('foo-table').where('id', id).delete()` resolves to the **number of records** affected by the delete
-
-3. Flesh out the middleware functions inside `shippers-router.js` so we keep the code as DRY as possible (See code inside `shippers-router.js`.)
-4. Fix the endpoints inside `shippers-router.js` noting how clean they are since the model functions and middlewares do all the heavy lifting

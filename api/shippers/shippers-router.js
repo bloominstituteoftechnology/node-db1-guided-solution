@@ -1,32 +1,9 @@
 const express = require('express')
 const Shipper = require('./shippers-model')
+const { checkId, checkPayload } = require('./shippers-middleware')
 
 const router = express.Router()
 
-// MIDDLEWARES, ELSE THE LOGIC GETS VERY REPETITIVE IN THE ENDPOINTS!!
-// these could live in a separate module
-async function checkId(req, res, next) {
-  try {
-    const shipper = await Shipper.getById(req.params.shipperid)
-    if (shipper) {
-      req.shipper = shipper // req.shipper is used in [GET] api/shippers/:shipperid endpoint saving an extra trip to the db
-      next()
-    } else {
-      next({ status: 404, message: 'Shipper not found' })
-    }
-  } catch (err) { next(err) }
-}
-
-function checkPayload(req, res, next) {
-  const { shippername, phone } = req.body
-  if (shippername && phone) {
-    next()
-  } else {
-    next({ status: 404, message: 'shippername and phone are required' })
-  }
-}
-
-// ENDPOINTS
 router.get('/', async (req, res, next) => {
   try {
     const shippers = await Shipper.get()
