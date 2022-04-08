@@ -31,7 +31,7 @@ SELECT employeeid, firstname, lastname FROM employees;
 -- 3- discuss combining columns to create new ones
 SELECT (firstname || ' ' || lastname) as fullname FROM employees;
 
--- LEARNER: select a full address column concatenating other columns
+-- LEARNER: select a full address column concatenating other columns in the customers table
 SELECT (postalcode || ' ' || country) as theaddress FROM customers;
 
 -- 4- dicuss WHERE, AND, OR, LIKE, strings, comparison operators, wildcards in strings
